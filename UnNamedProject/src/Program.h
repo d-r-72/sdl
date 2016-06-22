@@ -5,6 +5,7 @@
 #include <string>
 
 #include "constants.h"
+#include "Texture.h"
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -33,12 +34,13 @@ private:
 	void Close();
 	void Update();
 	bool Input();
-	SDL_Surface* LoadSurface(std::string path);
-	SDL_Texture *LoadTexture(std::string path);
 
 	SDL_Window *window;
-	SDL_Texture *texture;
 	SDL_Renderer *renderer;
+
+	Texture mTextureOne;
+	Texture mTextureTwo;
+
 	SDL_Event e;
 };
 

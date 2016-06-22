@@ -7,59 +7,7 @@ Program::Program()
 }
 
 Program::~Program()
-{
-}
-
-SDL_Surface* Program::LoadSurface(std::string path)
-{
-	SDL_Surface *optimized = NULL;
-	SDL_Surface *result = IMG_Load(path.c_str());
-	if (result == NULL)
-	{
-		std::cout << "Error loading " << path << std::endl;
-		system("PAUSE");
-		exit(1);
-	}
-	else
-	{
-		//optimized = SDL_ConvertSurface(result, screenSurface->format, NULL);
-		if (optimized == NULL)
-		{
-			std::cout << "Error optimizing " << path << std::endl;
-			system("PAUSE");
-			exit(1);
-		}
-
-		SDL_FreeSurface(result);
-	}
-
-	return optimized;
-}
-
-SDL_Texture * Program::LoadTexture(std::string path)
-{
-	SDL_Texture *result = NULL;
-
-	SDL_Surface *newSurface = IMG_Load(path.c_str());
-	if (newSurface == NULL)
-	{
-		std::cout << "Error loading " << path << "\n" << IMG_GetError() << std::endl;
-		system("PAUSE");
-		exit(1);
-	}
-
-	result = SDL_CreateTextureFromSurface(renderer, newSurface);
-	if (result == NULL)
-	{
-		std::cout << "Error creating texture from surface " << SDL_GetError() << std::endl;
-		system("PAUSE");
-		exit(1);
-	}
-
-	SDL_FreeSurface(newSurface);
-
-	return result;
-}
+{}
 
 void Program::Init()
 {
@@ -69,7 +17,6 @@ void Program::Init()
 	}
 
 	window = NULL;
-	texture = NULL;
 	renderer = NULL;
 
 	if (!CreateWindow(cons::WIDTH, cons::HEIGHT))
@@ -119,34 +66,14 @@ void Program::Update()
 
 	while (!done)
 	{		
-		//Clear screen
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-
-		SDL_Rect Fillrect = {cons::WIDTH / 4, cons::HEIGHT / 4, cons::WIDTH / 2, cons::HEIGHT / 2 };
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
-		SDL_RenderFillRect(renderer, &Fillrect);
-
-		//Render texture
-		//SDL_RenderCopy(renderer, texture, NULL, NULL);
-
-		SDL_Rect rect = { cons::WIDTH / 6, cons::HEIGHT / 6, cons::WIDTH * 2 / 3, cons::HEIGHT * 2 / 3 };
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &rect);
-
-		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-		SDL_RenderDrawLine(renderer, 0, cons::HEIGHT / 2, cons::WIDTH, cons::HEIGHT / 2);
-
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-		for (int i = 0; i < cons::HEIGHT; i += 4)
-		{
-			SDL_RenderDrawPoint(renderer, cons::WIDTH / 2, i);
-		}
-
-		//Update
+		mTextureTwo.Render(0, 0);
+		mTextureOne.Render(240, 190);
+	
 		SDL_RenderPresent(renderer);
-
+		
 		done = Input();
 	}
 }
@@ -177,15 +104,27 @@ bool Program::LoadMedia()
 {
 	bool result = true;
 
-	//texture = LoadTexture("res/image.png");
+	if (!(mTextureOne.LoadTexture("res/first.png", renderer)))
+	{
+		std::cout << "Error Loading Texture One\n";
+		system("PAUSE");
+		exit(1);
+	}
+
+	if (!(mTextureTwo.LoadTexture("res/second.png", renderer)))
+	{
+		std::cout << "Error Loading Texture Two\n";
+		system("PAUSE");
+		exit(1);
+	}
 
 	return result;
 }
 
 void Program::Close()
 {
-	SDL_DestroyTexture(texture);
-	texture = NULL;
+	mTextureOne.Free();
+	mTextureTwo.Free();
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
