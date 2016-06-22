@@ -37,9 +37,9 @@ private:
 
 	SDL_Window *window;
 	SDL_Renderer *renderer;
-
-	Texture mTextureOne;
-	Texture mTextureTwo;
+	SDL_Rect mSpriteClips[4];
+	Texture mSpriteSheet;
+	
 
 	SDL_Event e;
 };

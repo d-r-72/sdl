@@ -15,7 +15,7 @@ public:
 
 	bool LoadTexture(std::string path, SDL_Renderer *renderer);
 
-	void Render(int x, int y);
+	void Render(int x, int y, SDL_Rect * clip = NULL);
 
 	int GetWidth() { return mWidth; }
 	int GetHeight() { return mHeight; }

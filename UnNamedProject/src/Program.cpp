@@ -68,10 +68,18 @@ void Program::Update()
 	{		
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-		mTextureTwo.Render(0, 0);
-		mTextureOne.Render(240, 190);
 	
+		mSpriteSheet.Render(0, 0, &mSpriteClips[0]);
+
+		//Render top right sprite
+		mSpriteSheet.Render(cons::WIDTH - mSpriteClips[1].w, 0, &mSpriteClips[1]);
+
+		//Render bottom left sprite
+		mSpriteSheet.Render(0, cons::HEIGHT - mSpriteClips[2].h, &mSpriteClips[2]);
+
+		//Render bottom right sprite
+		mSpriteSheet.Render(cons::WIDTH - mSpriteClips[3].w, cons::HEIGHT - mSpriteClips[3].h, &mSpriteClips[3]);
+
 		SDL_RenderPresent(renderer);
 		
 		done = Input();
@@ -104,27 +112,36 @@ bool Program::LoadMedia()
 {
 	bool result = true;
 
-	if (!(mTextureOne.LoadTexture("res/first.png", renderer)))
-	{
-		std::cout << "Error Loading Texture One\n";
-		system("PAUSE");
-		exit(1);
-	}
+	mSpriteSheet.LoadTexture("res/spriteSheet.png", renderer);
 
-	if (!(mTextureTwo.LoadTexture("res/second.png", renderer)))
-	{
-		std::cout << "Error Loading Texture Two\n";
-		system("PAUSE");
-		exit(1);
-	}
+	mSpriteClips[0].x = 0;
+	mSpriteClips[0].y = 0;
+	mSpriteClips[0].w = 100;
+	mSpriteClips[0].h = 100;
+
+	//Set top right sprite
+	mSpriteClips[1].x = 100;
+	mSpriteClips[1].y = 0;
+	mSpriteClips[1].w = 100;
+	mSpriteClips[1].h = 100;
+
+	//Set bottom left sprite
+	mSpriteClips[2].x = 0;
+	mSpriteClips[2].y = 100;
+	mSpriteClips[2].w = 100;
+	mSpriteClips[2].h = 100;
+
+	//Set bottom right sprite
+	mSpriteClips[3].x = 100;
+	mSpriteClips[3].y = 100;
+	mSpriteClips[3].w = 100;
+	mSpriteClips[3].h = 100;
 
 	return result;
 }
 
 void Program::Close()
 {
-	mTextureOne.Free();
-	mTextureTwo.Free();
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);

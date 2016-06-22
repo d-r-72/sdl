@@ -52,10 +52,17 @@ bool Texture::LoadTexture(std::string path, SDL_Renderer *renderer)
 	return mTexture != NULL;
 }
 
-void Texture::Render(int x, int y)
+void Texture::Render(int x, int y, SDL_Rect * clip)
 {
 	SDL_Rect rect = { x, y, mWidth, mHeight };
-	SDL_RenderCopy(mRenderer, mTexture, NULL, &rect);
+
+	if (clip != NULL)
+	{	
+		rect.w = clip->w;
+		rect.h = clip->h;
+	}
+
+	SDL_RenderCopy(mRenderer, mTexture, clip, &rect);
 }
 
 void Texture::Free()
