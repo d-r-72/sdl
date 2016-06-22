@@ -16,7 +16,7 @@ void Program::Init()
 		std::cout << SDL_GetError() << std::endl;
 	}
 
-	r = 255, g = 255, b = 255, a=255;
+	r = 255, g = 255, b = 255, a = 255;
 	window = NULL;
 	renderer = NULL;
 
@@ -65,6 +65,10 @@ void Program::Update()
 {
 	bool done = false;
 
+	angle = 0;
+
+	flip = SDL_FLIP_VERTICAL;
+
 	while (!done)
 	{		
 		SDL_RenderClear(renderer);
@@ -73,7 +77,7 @@ void Program::Update()
 		back.Render(0, 0);
 		
 		front.SetAlpha(a);
-		front.Render(0, 0);
+		front.Render(0, 0, NULL, angle, NULL, flip);
 
 
 		SDL_RenderPresent(renderer);
@@ -95,17 +99,13 @@ bool Program::Input()
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_DOWN:
-				if (a - 5 < 0)
-					a = 0;
-				else
-					a -= 5;
+				angle += 30;
+
 				break;
 
 			case SDLK_UP:
-				if (a + 5 > 255)
-					a = 255;
-				else
-					a += 5;
+				angle -= 30;
+
 				break;
 
 			default:

@@ -46,6 +46,10 @@ private:
 	Uint8 b;
 	Uint8 a;
 
+	double angle;
+
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+
 	SDL_Event e;
 };
 

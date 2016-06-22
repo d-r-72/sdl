@@ -52,7 +52,7 @@ bool Texture::LoadTexture(std::string path, SDL_Renderer *renderer)
 	return mTexture != NULL;
 }
 
-void Texture::Render(int x, int y, SDL_Rect * clip)
+void Texture::Render(int x, int y, SDL_Rect * clip, double angle, SDL_Point * center, SDL_RendererFlip flip)
 {
 	SDL_Rect rect = { x, y, mWidth, mHeight };
 
@@ -62,7 +62,7 @@ void Texture::Render(int x, int y, SDL_Rect * clip)
 		rect.h = clip->h;
 	}
 
-	SDL_RenderCopy(mRenderer, mTexture, clip, &rect);
+	SDL_RenderCopyEx(mRenderer, mTexture, clip, &rect, angle, center, flip);
 }
 
 void Texture::SetColor(Uint8 r, Uint8 g, Uint8 b)
