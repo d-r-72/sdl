@@ -65,6 +65,21 @@ void Texture::Render(int x, int y, SDL_Rect * clip)
 	SDL_RenderCopy(mRenderer, mTexture, clip, &rect);
 }
 
+void Texture::SetColor(Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetTextureColorMod(mTexture, r, g, b);
+}
+
+void Texture::SetAlpha(Uint8 a)
+{
+	SDL_SetTextureAlphaMod(mTexture, a);
+}
+
+void Texture::SetBlendMode(SDL_BlendMode mode)
+{
+	SDL_SetTextureBlendMode(mTexture, mode);
+}
+
 void Texture::Free()
 {	
 	if (mTexture != NULL)

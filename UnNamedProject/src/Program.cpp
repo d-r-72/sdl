@@ -16,6 +16,7 @@ void Program::Init()
 		std::cout << SDL_GetError() << std::endl;
 	}
 
+	r = 255, g = 255, b = 255, a=255;
 	window = NULL;
 	renderer = NULL;
 
@@ -68,17 +69,12 @@ void Program::Update()
 	{		
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	
-		mSpriteSheet.Render(0, 0, &mSpriteClips[0]);
+		
+		back.Render(0, 0);
+		
+		front.SetAlpha(a);
+		front.Render(0, 0);
 
-		//Render top right sprite
-		mSpriteSheet.Render(cons::WIDTH - mSpriteClips[1].w, 0, &mSpriteClips[1]);
-
-		//Render bottom left sprite
-		mSpriteSheet.Render(0, cons::HEIGHT - mSpriteClips[2].h, &mSpriteClips[2]);
-
-		//Render bottom right sprite
-		mSpriteSheet.Render(cons::WIDTH - mSpriteClips[3].w, cons::HEIGHT - mSpriteClips[3].h, &mSpriteClips[3]);
 
 		SDL_RenderPresent(renderer);
 		
@@ -90,8 +86,35 @@ bool Program::Input()
 {
 	bool result = false;
 	while (SDL_PollEvent(&e))
+	{
 		if (e.type == SDL_QUIT)
 			result = true;
+		
+		if (e.type = SDL_KEYDOWN)
+		{
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_DOWN:
+				if (a - 5 < 0)
+					a = 0;
+				else
+					a -= 5;
+				break;
+
+			case SDLK_UP:
+				if (a + 5 > 255)
+					a = 255;
+				else
+					a += 5;
+				break;
+
+			default:
+				break;
+			}
+		}
+
+	}
+
 
 	return result;
 }
@@ -112,30 +135,9 @@ bool Program::LoadMedia()
 {
 	bool result = true;
 
-	mSpriteSheet.LoadTexture("res/spriteSheet.png", renderer);
-
-	mSpriteClips[0].x = 0;
-	mSpriteClips[0].y = 0;
-	mSpriteClips[0].w = 100;
-	mSpriteClips[0].h = 100;
-
-	//Set top right sprite
-	mSpriteClips[1].x = 100;
-	mSpriteClips[1].y = 0;
-	mSpriteClips[1].w = 100;
-	mSpriteClips[1].h = 100;
-
-	//Set bottom left sprite
-	mSpriteClips[2].x = 0;
-	mSpriteClips[2].y = 100;
-	mSpriteClips[2].w = 100;
-	mSpriteClips[2].h = 100;
-
-	//Set bottom right sprite
-	mSpriteClips[3].x = 100;
-	mSpriteClips[3].y = 100;
-	mSpriteClips[3].w = 100;
-	mSpriteClips[3].h = 100;
+	front.LoadTexture("res/front.png", renderer);
+	front.SetBlendMode(SDL_BLENDMODE_BLEND);
+	back.LoadTexture("res/back.png", renderer);
 
 	return result;
 }

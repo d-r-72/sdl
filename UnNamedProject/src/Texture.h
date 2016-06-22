@@ -20,6 +20,10 @@ public:
 	int GetWidth() { return mWidth; }
 	int GetHeight() { return mHeight; }
 
+	void SetColor(Uint8 r, Uint8 g, Uint8 b);
+	void SetAlpha(Uint8 a);
+	void SetBlendMode(SDL_BlendMode mode);
+
 	void Free();
 private:
 	

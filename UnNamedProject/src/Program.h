@@ -37,9 +37,14 @@ private:
 
 	SDL_Window *window;
 	SDL_Renderer *renderer;
-	SDL_Rect mSpriteClips[4];
-	Texture mSpriteSheet;
+
+	Texture front;
+	Texture back;
 	
+	Uint8 r;
+	Uint8 g;
+	Uint8 b;
+	Uint8 a;
 
 	SDL_Event e;
 };
